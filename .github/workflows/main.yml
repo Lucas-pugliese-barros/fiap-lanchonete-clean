@@ -61,6 +61,8 @@ jobs:
           sed -i "s/{{DB_URL}}/${{ secrets.DB_URL }}/g" k8s/secret-postgres-db.yaml
           sed -i "s/{{DB_USER}}/${{ secrets.DB_USER }}/g" k8s/secret-postgres-db.yaml
           sed -i "s/{{DB_PASSWORD}}/${{ secrets.DB_PASSWORD }}/g" k8s/secret-postgres-db.yaml
+          sed -i "s/{{DB_NAME}}/${{ secrets.DB_NAME }}/g" k8s/secret-postgres-db.yaml
+          sed -i "s/{{DB_PORT}}/${{ secrets.DB_PORT }}/g" k8s/secret-postgres-db.yaml
           sed -i "s/{{ACCOUNT_ID}}/${{ secrets.ACCOUNT_ID }}/g" k8s/deployment.yaml
           sed -i "s/{{AWS_REGION}}/${{ secrets.AWS_REGION }}/g" k8s/deployment.yaml
           sed -i "s/{{ECR_REPOSITORY}}/${{ secrets.ECR_REPOSITORY }}/g" k8s/deployment.yaml
@@ -70,15 +72,15 @@ jobs:
         run: |
           kubectl apply -f k8s/secret-postgres-db.yaml
 
-      # Step 11: Realizar deploy de imagem do ecs no cluster eks
+      # Step 11: Deletar os pods existentes para forçar a criação de novos
+      - name: Delete existing pods
+        run: |
+          kubectl delete pod -l app=deployment-restaurant-application
+
+      # Step 12: Realizar deploy de imagem do ecs no cluster eks
       - name: Deploy to Kubernetes
         run: |
           kubectl apply -f k8s/deployment.yaml
           kubectl apply -f k8s/svc-restaurant-application.yaml
           kubectl apply -f k8s/hpa.yaml
-          kubectl set image deployment/restaurant-application restaurant-application=${{ secrets.ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ secrets.ECR_REPOSITORY }}:latest
-
-      # Step 12: Realizar rollout no cluster eks para aplicar configurações
-      - name: Check Deployment rollout status
-        run: |
-          kubectl rollout status deployment/restaurant-application
+          kubectl set image deployment/deployment-restaurant-application deployment-restaurant-application=${{ secrets.ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ secrets.ECR_REPOSITORY }}:latest
