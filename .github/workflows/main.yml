@@ -84,3 +84,17 @@ jobs:
           kubectl apply -f k8s/svc-restaurant-application.yaml
           kubectl apply -f k8s/hpa.yaml
           kubectl set image deployment/deployment-restaurant-application deployment-restaurant-application=${{ secrets.ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ secrets.ECR_REPOSITORY }}:latest
+
+      # Step 13: Esperar até que o LoadBalancer seja criado
+      - name: Wait for LoadBalancer
+        run: |
+          while [[ -z $(kubectl get svc restaurant-application-service -o jsonpath='{.status.loadBalancer.ingress[0].hostname}') ]]; do
+            echo "Waiting for LoadBalancer..."
+            sleep 10
+          done
+
+      # Step 14: Obter URL do LoadBalancer
+      - name: Get LoadBalancer URL
+        run: |
+          LOAD_BALANCER_URL=$(kubectl get svc restaurant-application-service -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
+          echo "LoadBalancer URL: $LOAD_BALANCER_URL"
