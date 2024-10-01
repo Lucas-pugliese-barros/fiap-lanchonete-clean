@@ -5,7 +5,7 @@ metadata:
   labels:
     app: deployment-restaurant-application
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: deployment-restaurant-application
@@ -13,37 +13,37 @@ spec:
     metadata:
       labels:
         app: deployment-restaurant-application
-    spec:    
+    spec:
       containers:
         - name: deployment-restaurant-application
-          image: lpugliese/fiap-clean-restaurant-application:latest
+          image: {{ACCOUNT_ID}}.dkr.ecr.{{AWS_REGION}}.amazonaws.com/{{ECR_REPOSITORY}}:latest
           ports:
             - containerPort: 8080
           env:
             - name: DB_URL
               valueFrom:
                 secretKeyRef:
-                  name: secret-application-postgres-db
+                  name: secret-postgres-db
                   key: db_url
             - name: DB_USER
               valueFrom:
                 secretKeyRef:
-                  name: secret-application-postgres-db
+                  name: secret-postgres-db
                   key: db_user
             - name: DB_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: secret-application-postgres-db
+                  name: secret-postgres-db
                   key: db_password
             - name: DB_DRIVER
               valueFrom:
                 secretKeyRef:
-                  name: secret-application-postgres-db
+                  name: secret-postgres-db
                   key: db_driver
             - name: DB_DIALECT
               valueFrom:
                 secretKeyRef:
-                  name: secret-application-postgres-db
+                  name: secret-postgres-db
                   key: db_dialect
           readinessProbe:
             httpGet:
