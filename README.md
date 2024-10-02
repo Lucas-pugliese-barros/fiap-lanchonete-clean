@@ -177,6 +177,19 @@ docker push lpugliese/fiap-clean-restaurant-application:latest
 ## Video da arquitetura
 https://www.youtube.com/watch?v=dx0dzh5TJpE
 
+## Secrets necessárias para executar este deploy automatizado:
+ACCOUNT_ID
+AWS_ACCESS_KEY_ID
+AWS_REGION
+AWS_SECRET_ACCESS_KEY
+DB_PASSWORD
+DB_URL
+DB_USER
+DB_NAME
+DB_PORT
+ECR_REPOSITORY
+EKS_CLUSTER
+
 ## Rodar arquitetura em cloud
 Executar o deploy automatizado do projeto fiap-db-lanchonete
 https://github.com/Lucas-pugliese-barros/fiap-db-lanchonete
