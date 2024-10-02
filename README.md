@@ -176,3 +176,19 @@ docker push lpugliese/fiap-clean-restaurant-application:latest
 
 ## Video da arquitetura
 https://www.youtube.com/watch?v=dx0dzh5TJpE
+
+## Rodar arquitetura em cloud
+Executar o deploy automatizado do projeto fiap-db-lanchonete
+https://github.com/Lucas-pugliese-barros/fiap-db-lanchonete
+
+executar após isso o deploy automatizado do fiap-lambda-lanchonete
+https://github.com/Lucas-pugliese-barros/fiap-lambda-lanchonete
+
+executar após isso o deploy automatizado do fiao-k8s-lanchonete
+https://github.com/Lucas-pugliese-barros/fiap-k8s-lanchonete
+
+e por ultimo executar o deploy automatizado do fiap-lanchoente-clean
+https://github.com/Lucas-pugliese-barros/fiap-k8s-lanchonete
+
+## Video da arquitetura em cloud 
+https://www.youtube.com/watch?v=xraFEzmsSFk
